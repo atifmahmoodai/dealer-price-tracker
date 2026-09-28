@@ -1,0 +1,30 @@
+[
+  {
+    "id": "example-jsonld-dealer",
+    "name": "Example Dealer (structured data)",
+    "website": "https://www.example-dealer.com",
+    "startUrls": ["https://www.example-dealer.com/used-inventory"],
+    "mode": "auto",
+    "maxPages": 20,
+    "delayMs": 3000
+  },
+  {
+    "id": "example-html-dealer",
+    "name": "Example Dealer (HTML cards)",
+    "website": "https://www.another-dealer.com",
+    "startUrls": ["https://www.another-dealer.com/cars?sort=newest"],
+    "mode": "selectors",
+    "nextPage": "a.next-page",
+    "selectors": {
+      "card": ".listing-card",
+      "title": ".listing-title",
+      "price": ".listing-price",
+      "link": "a.listing-link@href",
+      "mileage": ".listing-mileage",
+      "vin": ".listing-vin",
+      "stockNo": ".listing-stock"
+    },
+    "maxPages": 20,
+    "delayMs": 3000
+  }
+]

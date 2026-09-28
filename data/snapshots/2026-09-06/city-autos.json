@@ -1,0 +1,10 @@
+{
+ "dealerId": "city-autos",
+ "date": "2026-09-06",
+ "scrapedAt": "2026-09-28T17:53:01.906Z",
+ "pages": 0,
+ "listings": [],
+ "errors": [
+  "https://city-autos.example/inventory: HTTP 503"
+ ]
+}

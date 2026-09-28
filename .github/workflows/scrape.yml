@@ -1,0 +1,33 @@
+name: Daily scrape
+
+# Scrapes the competitors in config/competitors.json every morning and commits the
+# new snapshot + report. Disabled until you add config/competitors.json.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    if: ${{ hashFiles('config/competitors.json') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Scrape
+        run: npm run scrape
+        continue-on-error: true # one blocked site shouldn't lose the others' data
+      - name: Commit results
+        run: |
+          git config user.name "price-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data public/data
+          git diff --cached --quiet || git commit -m "Scrape $(date -u +%F)"
+          git push

@@ -1,0 +1,40 @@
+[
+ {
+  "id": "metro-motors",
+  "name": "Metro Motors",
+  "website": "https://metro-motors.example",
+  "startUrls": [
+   "https://metro-motors.example/inventory"
+  ],
+  "delayMs": 0
+ },
+ {
+  "id": "city-autos",
+  "name": "City Autos",
+  "website": "https://city-autos.example",
+  "startUrls": [
+   "https://city-autos.example/inventory"
+  ],
+  "delayMs": 0,
+  "mode": "selectors",
+  "nextPage": "a.pagination-next",
+  "selectors": {
+   "card": ".vehicle-card",
+   "title": ".vehicle-title",
+   "price": ".vehicle-price",
+   "link": "a.vehicle-link@href",
+   "mileage": ".odometer",
+   "vin": ".vin",
+   "stockNo": ".stock"
+  }
+ },
+ {
+  "id": "prime-cars",
+  "name": "Prime Cars",
+  "website": "https://prime-cars.example",
+  "startUrls": [
+   "https://prime-cars.example/inventory"
+  ],
+  "delayMs": 0
+ }
+]
