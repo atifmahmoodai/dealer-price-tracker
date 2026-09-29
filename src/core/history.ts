@@ -87,7 +87,10 @@ export function buildHistory(snapshots: Snapshot[], dealers: DealerInfo[], ownSt
             priceChanges++;
           }
           const { firstSeen, firstPrice, priceChanges: pc } = t;
-          Object.assign(t, l, { firstSeen, firstPrice: firstPrice ?? l.price, priceChanges: pc, lastSeen: snap.date, status: "active" as const });
+          // A day showing "Call for price" (or a missing field) keeps the last known value, so the
+          // next real price is still compared against it.
+          const kept = { price: l.price ?? t.price, mileage: l.mileage ?? t.mileage, year: l.year ?? t.year };
+          Object.assign(t, l, kept, { firstSeen, firstPrice: firstPrice ?? l.price, priceChanges: pc, lastSeen: snap.date, status: "active" as const });
         }
         active.add(id);
       }

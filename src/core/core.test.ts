@@ -14,11 +14,14 @@ describe("normalize", () => {
     expect(parsePrice("Call for price")).toBeUndefined();
     expect(parsePrice(0)).toBeUndefined();
     expect(parsePrice(18999.5)).toBe(19000);
+    expect(parsePrice("€12.500")).toBe(12500); // European thousands separator
+    expect(parsePrice("$12.50k")).toBe(12500);
   });
   it("parses mileage, VINs and titles", () => {
     expect(parseMileage("45,210 mi")).toBe(45210);
     expect(parseMileage("72k km")).toBe(72000);
     expect(parseMileage("New")).toBeUndefined();
+    expect(parseMileage("45.210 km")).toBe(45210);
     expect(parseVin("VIN: 1hgcm82633a004352 ")).toBe("1HGCM82633A004352");
     expect(parseVin("VIN: 1HGCM8263IA004352")).toBeUndefined(); // I is never valid
     expect(parseTitle("2021 Toyota Corolla LE Hybrid")).toEqual({ year: 2021, make: "Toyota", model: "Corolla", trim: "LE Hybrid" });
@@ -67,6 +70,12 @@ describe("buildHistory", () => {
     expect(c2.priceChanges).toBe(2);
     expect(c2.daysOnSite).toBe(4);
     expect(h.events.find((e) => e.type === "price_change" && e.date === "2026-09-03")?.delta).toBe(-500);
+  });
+
+  it("keeps the last price through a 'call for price' day", () => {
+    const h = buildHistory([snap("2026-09-01", base), snap("2026-09-02", base.map((c) => (c.key === "c1" ? { ...c, price: undefined } : c))), snap("2026-09-03", base.map((c) => (c.key === "c1" ? { ...c, price: 9500 } : c)))], DEALERS);
+    const ev = h.events.filter((e) => e.key === "c1");
+    expect(ev.map((e) => `${e.type} ${e.oldPrice}→${e.newPrice}`)).toEqual(["price_change 11000→9500"]);
   });
 
   it("does not count cars from the first scrape as new", () => {

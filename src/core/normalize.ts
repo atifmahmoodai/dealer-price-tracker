@@ -20,11 +20,11 @@ export function parsePrice(input: unknown): number | undefined {
   const m = s.match(/(\d[\d,.]*)\s*([kKmM])?\b/);
   if (!m) return undefined;
   let digits = m[1].replace(/,/g, "");
-  // "1.250.000" uses dots as thousands separators.
-  if (/^\d+\.\d{3}(\.\d{3})+$/.test(digits)) digits = digits.replace(/\./g, "");
+  const suffix = m[2]?.toLowerCase();
+  // "1.250.000" and "12.500" (European style) use dots as thousands separators; no car costs 12.5.
+  if (/^\d+\.\d{3}(\.\d{3})+$/.test(digits) || (!suffix && /^\d{1,3}\.\d{3}$/.test(digits))) digits = digits.replace(/\./g, "");
   let n = Number(digits);
   if (!Number.isFinite(n)) return undefined;
-  const suffix = m[2]?.toLowerCase();
   if (suffix === "k") n *= 1_000;
   if (suffix === "m") n *= 1_000_000;
   return n > 0 ? Math.round(n) : undefined;
@@ -36,7 +36,10 @@ export function parseMileage(input: unknown): number | undefined {
   if (typeof input !== "string") return undefined;
   const m = input.replace(/ /g, " ").match(/(\d[\d,.]*)\s*([kK])?/);
   if (!m) return undefined;
-  let n = Number(m[1].replace(/,/g, ""));
+  let digits = m[1].replace(/,/g, "");
+  // "45.210 km" (European thousands separator) is 45,210, not 45.
+  if (/^\d{1,3}(\.\d{3})+$/.test(digits) && !m[2]) digits = digits.replace(/\./g, "");
+  let n = Number(digits);
   if (!Number.isFinite(n)) return undefined;
   if (m[2]) n *= 1000;
   return Math.round(n);
