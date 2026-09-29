@@ -12,19 +12,27 @@ permissions:
 
 jobs:
   scrape:
-    if: ${{ hashFiles('config/competitors.json') != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # hashFiles() isn't allowed in a job-level `if`, so check for the config in a step.
+      - name: Check for competitors config
+        id: cfg
+        run: |
+          if [ -f config/competitors.json ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; else echo "::notice::No config/competitors.json yet; skipping the scrape."; echo "ready=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.cfg.outputs.ready == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - if: steps.cfg.outputs.ready == 'true'
+        run: npm ci
       - name: Scrape
+        if: steps.cfg.outputs.ready == 'true'
         run: npm run scrape
         continue-on-error: true # one blocked site shouldn't lose the others' data
       - name: Commit results
+        if: steps.cfg.outputs.ready == 'true'
         run: |
           git config user.name "price-tracker-bot"
           git config user.email "actions@users.noreply.github.com"

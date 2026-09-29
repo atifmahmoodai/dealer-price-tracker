@@ -63,6 +63,10 @@ The demo sites cover the three formats you'll meet in practice: a JSON-LD ItemLi
 | `npm test` | Unit and integration tests (the scraper is checked car by car against simulated sites) |
 | `npm run smoke` | Browser test of the built dashboard (desktop, phone, dark mode) |
 
-## Deploy the dashboard
+## Deploy
+This repo is private, and GitHub Pages for private repos needs a paid GitHub plan, so the Pages workflow runs **only when started by hand**. To publish:
+1. Make the repo public (or upgrade your plan).
+2. Settings → Pages → Source: **GitHub Actions**.
+3. Actions → **Deploy…** → Run workflow.
 
-Settings → Pages → Source: **GitHub Actions**. Pushes to `main` then publish the dashboard with the latest `public/data/history.json`.
+Or deploy anywhere static for free (Netlify, Vercel, Cloudflare Pages): build it and upload the output folder.

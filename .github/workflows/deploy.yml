@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
-# One-time setup: repo Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Manual only: this repo is private, and GitHub Pages for private repos needs a paid plan.
+# To publish: make the repo public (or upgrade), set Settings → Pages → Source: "GitHub Actions",
+# then run this workflow from the Actions tab (or add `push: branches: [main]` back below).
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
