@@ -1,0 +1,28 @@
+{
+  "name": "dealer-price-tracker-production-grade",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Production version of the competitor price tracker: scheduled scraping into PostgreSQL, logins, alerts and a dashboard.",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "npm run dev -w server & npm run dev -w web",
+    "build": "npm run build -w web && npm run build -w server",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w web",
+    "test": "vitest run --root shared && npm test -w server && npm test -w web",
+    "migrate": "npm run migrate -w server",
+    "seed:demo": "npm run seed:demo -w server",
+    "create-admin": "npm run create-admin -w server --",
+    "start": "npm start -w server",
+    "smoke": "npm run smoke -w web"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
