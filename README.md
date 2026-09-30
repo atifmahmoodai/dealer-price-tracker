@@ -2,6 +2,8 @@
 
 Watches competitor dealer websites every day and answers the questions dealers pay for:
 
+**Project guide (PDF):** [docs/PROJECT-GUIDE.pdf](docs/PROJECT-GUIDE.pdf) explains what this project is, the business problem it solves, the client's requirements, and how to build it from scratch, step by step.
+
 - **What did they add, sell and discount this week?** A change feed of new listings, price cuts and raises, removed (sold) cars, and relists.
 - **How fast do their cars sell?** Days on site per car, and the median per competitor.
 - **Am I priced right?** Each of your cars is compared with competitors' listings of the same make and model, ±1 year and ±25k miles, with the market median and how far above or below it you are.
