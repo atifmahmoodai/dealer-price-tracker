@@ -168,6 +168,7 @@ try {
   console.log("Admin: stock, settings, users");
   await page.goto(`${BASE}stock`);
   await page.waitForSelector("tbody tr");
+  check(!(await page.locator("input[type=file]").isVisible()), "the file picker stays hidden behind its Upload button");
   await page.setInputFiles("input[type=file]", { name: "bad.csv", mimeType: "text/csv", buffer: Buffer.from("Stock,Price\nA,1\n") });
   await page.waitForSelector("[role=alert] >> text=missing column");
   check(true, "a malformed stock file is explained");

@@ -174,3 +174,8 @@ details summary { cursor: pointer; }
   .kpis { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
   .user { width: 100%; }
 }
+
+/* The hidden attribute must win over "input { display: block }" above. */
+[hidden] { display: none !important; }
+input:disabled, select:disabled, textarea:disabled { opacity: 0.65; cursor: not-allowed; }
+.stack { align-content: start; }
